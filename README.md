@@ -2,6 +2,13 @@
 
 Ce dépôt vous accompagnera tout au long du cours de cette année.
 
+1. [Setup](#pre-requis)
+    - [Terminal](#terminal)
+    - [Environnement JS](#environnement-js)
+    - [Git](#git)
+2. [Workflow](#workflow)
+    - [Linters](#linters)
+
 ## Pré-requis
 
 Afin de pouvoir faire du "développement web avancé", nous devons commencer par configurer un environnement "kivabien".
@@ -17,7 +24,7 @@ Nous aurons donc besoin de :
     - `npm`
 3. Git
 
-## Terminal
+### Terminal
 
 Logiciel qui permet d'émuler un ou plusieurs __terminaux informatiques__ sur notre machine.
 Grâce à ce terminal, nous pourrons ouvrir un __shell__.
@@ -43,7 +50,7 @@ Parmi les commandes de base on notera :
 - `clear` : rafraîchit la fenêtre du terminal
 - `exit` : 🚪…
 
-### Note
+#### Note
 
 - `~` (tilde), fait référence à la racine de votre dossier utilisateur
 - `/`, fait référence à la racine de votre système
@@ -55,13 +62,13 @@ Parmi les commandes de base on notera :
 > - [Le designer qui chuchotait à l'oreille des chevaux](http://slides.com/thierrymichel/le-designer-qui-chuchotait-l-oreille-des-ordinateurs#/)
 > - [Command Line Crash Course](https://learnpythonthehardway.org/book/appendixa.html)
 
-## Environnement JS
+### Environnement JS
 
-### Node.js
+#### Node.js
 
 > Ressources : [Node.js](https://nodejs.org/en/)
 
-### nvm (Node Version Manager)
+#### nvm (Node Version Manager)
 
 Permet de gérer plusieurs versions de Node.js sur un même système.
 Simplifie également la question des permissions en s'exécutant et en installant les packages globaux dans le dossier utilisateur…
@@ -75,7 +82,7 @@ nvm install node
 
 > Ressources : [nvm](https://github.com/creationix/nvm)
 
-### npm
+#### npm
 
 C'est le gestionnaire de "packages" de Node.js, il est installé par défaut avec ce dernier.
 Tout (bon) projet souhaitant utiliser `npm` doit être initialisé via `npm init`.
@@ -153,3 +160,39 @@ Toutes données à caractère sensible ainsi que, en règle génerale, les fichi
 
 Vous pouvez afficher les tags via `git tag`.
 Vous pouvez à tout moment passer à une autre étape grâce à `git checkout [tag-name]`…
+
+---
+
+## Workflow
+
+L'utilisation des dernières fonctionnalités de JS (ES6+…) nécessite certains "traitements" afin de garantir un bon support navigateur.
+
+Pour ce qui concerne __la syntaxe et les fonctionnalités__, le support est [très variable](https://kangax.github.io/compat-table/es6/).
+En mode expérimental, vous pouvez opter pour un bon élève (Chrome, par exemple).
+Mais pour la production, un "transpileur" (Babel, Traceur, …) s'avèrera nécessaire pour traduire notre JS moderne en JS compatible ES5.
+Nous utiliserons `babel`.
+
+Par ailleurs, nous allons nous atteler à écrire du code "propre" et modulaire.
+
+__Le code "propre"__ respectera certains "standards".
+La validation se fera via un linter.
+
+Pour __l'aspect modulaire__, celui n'étant pris en charge par aucun navigateur (sauf Edge en mode expérimental), nous aurons besoin d'un "bundler" (webpack, browserify, rollup, …).
+
+### Linters
+
+Permet de "valider" votre code, tant au niveau des _erreurs de syntaxes_, du respect de certaines _bonnes pratiques_ que de la _mise en forme_.
+Pour notre JavaScript, nous utiliserons [`eslint`](http://eslint.org/)
+
+```sh
+npm i -D eslint # npm install --save-dev eslint
+npm i -D babel-eslint # npm install --save-dev babel-eslint
+```
+
+Plusieurs usages sont possibles… Nous l'utiliserons via la ligne de commande et les scripts `npm`, avec un fichier de configuration `.eslintrc.json` ([voir repo](./.eslintrc.json)).
+On installe également le plugin pour `babel`…
+
+> Vous pouvez "linter" directement dans votre éditeur préféré et pas que votre JS ! (Sass, php, markdown, …)
+> Vous devriez également utiliser [EditorConfig](http://editorconfig.org/)
+>
+> Ressources : [ESLint](http://eslint.org/)
