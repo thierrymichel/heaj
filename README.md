@@ -8,6 +8,7 @@ Ce dépôt vous accompagnera tout au long du cours de cette année.
     - [Git](#git)
 2. [Workflow](#workflow)
     - [Linters](#linters)
+    - [Build](#build)
 
 ## Pré-requis
 
@@ -196,3 +197,67 @@ On installe également le plugin pour `babel`…
 > Vous devriez également utiliser [EditorConfig](http://editorconfig.org/)
 >
 > Ressources : [ESLint](http://eslint.org/)
+
+### Build
+
+Afin de garder un code souple et maintenable pour le développement et un projet performant en production, nous allons devoir "construire" nos fichiers de production.
+
+La structure de notre projet sera la suivante :
+
+- `index.html`
+- `src/main.js` (fichier principal de "dev")
+- `src/components/[modules].js` (nos différents modules)
+- `dist/main.bundle.js` (un seul fichier "compilé", pour la production)
+
+Et les outils utilisés seront :
+
+__Webpack__, qui va nous permettre d'écrire du code modulaire compatible avec le navigateur.
+
+```sh
+npm i -D webpack
+npm i -D webpack-dev-server
+npm i -D webpack-merge
+```
+
+- `webpack` est le noyau du bundler [🔗](https://webpack.js.org/)
+- `webpack-dev-server` va nous permettre de rafraîchir automatiquement le navigateur à chaque changement de code
+- `webpack-merge` va nous aider à maintenir 2 configurations : 1 de développement et 1 de production. Cela nous permettra de concilier facilement confort et productivité côté "dev" et performance côté "prod"
+
+__Babel__, qui vient en complément de `webpack` et permet de "transpiler" du JavaScript ES2015+ en mode ES5 compliant.
+
+```sh
+npm i -D babel-core
+npm i -D babel-loader
+npm i -D babel-preset-env
+```
+
+- `babel-core` est le noyau du transpileur [🔗](http://babeljs.io/)
+- `babel-loader` permet d'indiquer à `webpack` d'utiliser Babel
+- `babel-preset-env` va nous permettre de définir le niveau de support des fonctionnalités [🔗](https://github.com/babel/babel-preset-env)
+
+Nous avons ensuite besoin d'une "petite" configuration… 👻
+Les fichiers utilisés sont les suivants :
+
+- pour `webpack` :
+    - `webpack.config.js`
+    - `config/base.js`
+    - `config/dev.js`
+    - `config/prod.js`
+- pour `babel` :
+    - `.babelrc`
+
+À ce stade, les outils sont en place…
+
+Et ne nous reste plus qu'à ajouter quelques scripts pour pouvoir utiliser tout ça (`package.json`) :
+
+```json
+"scripts": {
+    "clean": "rm -rf dist/*",
+    "dev": "npm run lint && npm run clean && webpack-dev-server --env=dev",
+    "build": "npm run lint && npm run clean && webpack --env=prod --progress --profile --colors",
+},
+```
+
+Pour utiliser un de ces scripts, lancez `npm run [script-name]` dans le terminal.
+
+> Ressources : [Webpack](https://webpack.js.org/), [Babel](http://babeljs.io/)
