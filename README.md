@@ -9,6 +9,7 @@ Ce dépôt vous accompagnera tout au long du cours de cette année.
 2. [Workflow](#workflow)
     - [Linters](#linters)
     - [Build](#build)
+3. [First scene](#first-scene)
 
 ## Pré-requis
 
@@ -261,3 +262,166 @@ Et ne nous reste plus qu'à ajouter quelques scripts pour pouvoir utiliser tout 
 Pour utiliser un de ces scripts, lancez `npm run [script-name]` dans le terminal.
 
 > Ressources : [Webpack](https://webpack.js.org/), [Babel](http://babeljs.io/)
+
+## First scene
+
+1. main.js
+    - fichier "pilote" principal. S'occupe de l'import des modules/classes et des initialisations/instanciations
+2. App.js
+    - classe principale de notre "application". Va s'occuper de tout ce qui touche à la "scène"
+    - ES6 import/export
+3. ES6 class
+    - constructor
+    - methods
+    - `this`
+    - JSDoc comments
+
+    ```js
+    /**
+    * Scene manager
+    *
+    * @class App
+    */
+    class App {
+      /**
+      * Creates an instance of App.
+      *
+      * @memberOf App
+      */
+      constructor() {
+        this.createScene()
+      }
+
+      /**
+      * Scene init
+      *
+      * @returns {undefined}
+      *
+      * @memberOf App
+      */
+      createScene() {
+        console.info('App:createScene')
+      }
+    }
+    export defaut App
+    ```
+
+    ```js
+    /**
+     * Main JS entry file
+     */
+
+    // Components
+    import App from 'App'
+
+    console.info('Ready! 🚀')
+    const app = new App()
+    ```
+
+    > Rappel : `./components/App.js` -> `App` -> voir `config/base.js`
+
+4. Scene THREE.js
+    - Librairie JS pour faire de la 3D dans le navigateur ([wikipedia](https://fr.wikipedia.org/wiki/Three.js))
+    - Utilise WebGL -> GPU (vs CPU) ([wikipedia](https://fr.wikipedia.org/wiki/WebGL))
+    - Ingrédients de base : scène, caméra, renderer
+    - importer THREE
+        - NB : possible aussi via CDN et `<script>`
+    - Nomenclature propriétés (`_`)
+
+    ```sh
+    npm i -S three
+    ```
+
+    ```js
+    import * as THREE from 'three'
+
+    createScene() {
+      // Scene
+      this._scene = new THREE.Scene()
+      // Camera
+      this.initCamera()
+      // Renderer
+      this.initRenderer()
+
+      this.render()
+    }
+
+    /**
+     * Camera init
+     *
+     * @returns {undefined}
+     *
+     * @memberOf App
+     */
+    initCamera() {
+    }
+
+    /**
+     * Renderer init
+     *
+     * @returns {undefined}
+     *
+     * @memberOf App
+     */
+    initRenderer() {
+    }
+
+    /**
+     * Render the scene
+     *
+     * @returns {undefined}
+     *
+     * @memberOf App
+     */
+    render() {
+    }
+    ```
+
+5. Camera
+    - Options -> RTFM 📖 ([documentation](https://threejs.org/docs/?q=camera#Reference/Cameras/OrthographicCamera))
+    - ES6: `const` vs `let` (CodeRunner snippet)
+
+    ```js
+    initCamera() {
+      const fieldOfView = 60
+      const aspectRatio = window.width / window.height
+      const nearPlane = 1
+      const farPlane = 2000
+
+      this._camera = new THREE.PerspectiveCamera(
+        fieldOfView,
+        aspectRatio,
+        nearPlane,
+        farPlane
+      )
+      this._camera.position.x = 200
+      this._camera.position.y = 300
+      this._camera.position.z = 1000
+      this._camera.lookAt(new THREE.Vector3(0, 0, 0))
+    }
+    ```
+
+6. Renderer
+    - Utilise : scene + camera
+    - Utilise aussi un DOM element
+    - "Déplacer" w/h de `window` à `this`
+
+    ```js
+    initRenderer() {
+      this._renderer = new THREE.WebGLRenderer()
+      this._renderer.setSize(this._width, this._height)
+
+      document.body.appendChild(this.renderer.domElement)
+    }
+    ```
+
+7. Render
+    - Doit être appelé après chaque modifications de la scène (au minimum, à la fin du setup)
+    - Permet de rendre une scène via une caméra
+
+    ```js
+    render() {
+      // Scene rendering
+      this._renderer.render(this.scene, this._camera)
+    }
+    ```
