@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+const OrbitControls = require('three-orbit-controls')(THREE)
 
 /**
  * App manager
@@ -14,6 +15,7 @@ class App {
   constructor() {
     // Initialiser une scène
     this.initScene()
+    console.info(OrbitControls);
   }
 
   /**
@@ -29,12 +31,20 @@ class App {
     this._width = window.innerWidth
     this._height = window.innerHeight
     this._scene = new THREE.Scene()
+    window.scene = this._scene
+    window.THREE = THREE
 
     // Init camera
     this.initCamera()
 
+    // Init light
+    this.initLight()
+
     // Init renderer
     this.initRenderer()
+
+    // Init renderer
+    this.initControls()
 
     // Render !!!
     this.render()
@@ -52,6 +62,20 @@ class App {
       nearPlane,
       farPlane
     )
+    this._camera.position.x = 200;
+    this._camera.position.y = 300;
+    this._camera.position.z = 500;
+    this._camera.lookAt(new THREE.Vector3(0, 0, 0))
+  }
+
+  initLight() {
+    const light = new THREE.AmbientLight(0x999999, 1)
+
+    this._scene.add(light)
+  }
+
+  initControls() {
+    this._controls = new OrbitControls(this._camera, this._renderer.domElement)
   }
 
   initRenderer() {
@@ -61,7 +85,14 @@ class App {
   }
 
   render() {
+    requestAnimationFrame(() => {
+      this.render()
+    })
     this._renderer.render(this._scene, this._camera)
+  }
+
+  add(mesh) {
+    this._scene.add(mesh)
   }
 }
 export default App
