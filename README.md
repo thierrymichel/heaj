@@ -10,6 +10,7 @@ Ce dépôt vous accompagnera tout au long du cours de cette année.
     - [Linters](#linters)
     - [Build](#build)
 3. [First scene](#first-scene)
+4. [First mesh](#first-mesh)
 
 ## Pré-requis
 
@@ -423,5 +424,137 @@ Pour utiliser un de ces scripts, lancez `npm run [script-name]` dans le terminal
     render() {
       // Scene rendering
       this._renderer.render(this.scene, this._camera)
+    }
+    ```
+
+## First mesh
+
+1. Ajouter un cube
+    - Nous utiliserons de composants autonomes. Sous forme de classes ou de modules
+    - Notre objet (Cube) devra posséder un __mesh__ ([wikipedia](https://en.wikipedia.org/wiki/Polygon_mesh), [doc](https://threejs.org/docs/?q=mesh#Reference/Objects/Mesh))
+        - Un __mesh__ est composé de 2 choses : une __geometry__ et un __material__
+    - Notre objet (Cube) devra pouvoir retourner son mesh
+        - ES6 getters and setters
+    - Notre `App` devra pouvoir ajouter le mesh d'un objet à sa scène
+
+    ```js
+    import * as THREE from 'three'
+
+    /**
+     * Cube object
+     *
+     * @class Cube
+     */
+    class Cube {
+      /**
+       * Creates an instance of Cube.
+       * @param {object} size cube dimensions
+       * @param {number} size.width width
+       * @param {number} size.height height
+       * @param {number} size.depth depth
+       *
+       * @memberOf Cube
+       */
+      constructor(size) {
+        const geometry = new THREE.BoxGeometry(
+          size.width,
+          size.height,
+          size.depth
+        )
+        const material = new THREE.MeshBasicMaterial({
+          color: 0x00ff00,
+        })
+
+        this._mesh = new THREE.Mesh(geometry, material)
+      }
+
+      /**
+       * Get mesh
+       *
+       * @readonly
+       *
+       * @memberOf Cube
+       */
+      get mesh() {
+        return this._mesh
+      }
+    }
+
+    export default Cube
+    ```
+
+    ```js
+    constructor() {
+      this._objects = []
+      …
+    }
+    /**
+     * Add an object to the scene and store it into an array
+     *
+     * @param {object} obj Object with a mesh
+     *
+     * @returns {undefined}
+     *
+     * @memberOf App
+     */
+    add(obj) {
+      this._objects.push(obj)
+      this._scene.add(obj.mesh)
+    }
+    ```
+
+    ```js
+    import Cube from 'Cube'
+
+    app.add(new Cube({
+      width: 50,
+      height: 50,
+      depth: 50,
+    }))
+    ```
+
+    > `Array.push()`
+
+2. Mon cube ne s'affiche pas ?
+    - La scène n'a pas été "re-rendue"
+    - Solutions :
+        1. appeler `app.render()`
+        2. utiliser `requestAnimationFrame()`
+
+    ```js
+    render() {
+      requestAnimationFrame(() => {
+        this.render()
+      });
+    …
+    }
+    ```
+
+3. Exercice
+    - Créer une classe __Cube__ avec un constructeur et une méthode init (qui affiche un truc dans la console)
+    - Créer une instance de Cube dans `main.js`
+
+4. Ajouter de la lumière (et des ombres…)
+
+    ```js
+    initLights() {
+      const light = new THREE.DirectionalLight(0xeee56e, 1)
+
+      light.position.set(300, 300, 300)
+      this._lights.push(light)
+      this._scene.add(light)
+    }
+    ```
+
+    ```js
+    constructor(size) {
+      …
+      const material = new THREE.MeshLambertMaterial({
+        color: 0x00ff00,
+        shading: THREE.FlatShading,
+      })
+
+      this._mesh.castShadow = true
+      this._mesh.receiveShadow = true
     }
     ```
