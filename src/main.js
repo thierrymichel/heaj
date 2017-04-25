@@ -1,6 +1,12 @@
 /**
  * Main JS entry file
  */
+// Debug start
+global.debug = true;
+import * as THREE from 'three';
+// Debug end
+
+import World from 'World';
 
 /**
  * The game
@@ -42,8 +48,14 @@ class Game {
    */
   init() {
     console.info('Game:init! 🚀', this);
-    global.debug = true;
     document.documentElement.classList.add('ready');
+
+    this._world = new World();
+
+    if (global.debug) {
+      window.scene = this._world.scene;
+      window.THREE = THREE;
+    }
   }
 }
 
