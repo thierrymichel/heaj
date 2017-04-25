@@ -4,6 +4,7 @@
 // Debug start
 global.debug = true;
 import * as THREE from 'three';
+const OrbitControls = require('three-orbit-controls')(THREE);
 // Debug end
 
 import World from 'World';
@@ -61,6 +62,10 @@ class Game {
     if (global.debug) {
       window.scene = this._world.scene;
       window.THREE = THREE;
+      this._controls = new OrbitControls(
+        this._world.camera,
+        this._world.renderer.domElement
+      );
     }
 
     this._world.addLight(new Hemisphere());
