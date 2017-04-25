@@ -9,6 +9,7 @@ const OrbitControls = require('three-orbit-controls')(THREE);
 
 import World from 'World';
 import Sea from 'Sea';
+import Cloud from 'Cloud';
 import {
   Hemisphere,
   Ambient,
@@ -58,20 +59,20 @@ class Game {
     document.documentElement.classList.add('ready');
 
     this._world = new World();
-
-    if (global.debug) {
-      window.scene = this._world.scene;
-      window.THREE = THREE;
-      this._controls = new OrbitControls(
-        this._world.camera,
-        this._world.renderer.domElement
-      );
-    }
-
     this._world.addLight(new Hemisphere());
     this._world.addLight(new Ambient());
     this._world.addLight(new Directional());
     this._world.addObject(new Sea());
+    this._world.addObject(new Cloud());
+
+    if (global.debug) {
+      window.scene = this._world.scene;
+      window.THREE = THREE;
+      // this._controls = new OrbitControls(
+      //   this._world.camera,
+      //   this._world.renderer.domElement
+      // );
+    }
   }
 }
 
