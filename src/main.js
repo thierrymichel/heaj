@@ -1,6 +1,6 @@
 /**
  * Main JS entry file
  */
-global.debug = true
+global.debug = true;
 
-console.info('Ready! 🚀')
+console.info('Ready! 🚀');
