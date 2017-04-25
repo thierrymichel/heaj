@@ -7,6 +7,11 @@ import * as THREE from 'three';
 // Debug end
 
 import World from 'World';
+import {
+  Hemisphere,
+  Ambient,
+  Directional,
+} from 'Lights';
 
 /**
  * The game
@@ -56,6 +61,10 @@ class Game {
       window.scene = this._world.scene;
       window.THREE = THREE;
     }
+
+    this._world.addLight(new Hemisphere());
+    this._world.addLight(new Ambient());
+    this._world.addLight(new Directional());
   }
 }
 

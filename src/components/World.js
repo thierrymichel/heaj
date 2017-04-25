@@ -3,6 +3,7 @@ import {
   Fog,
   PerspectiveCamera,
   WebGLRenderer,
+  CameraHelper,
 } from 'three';
 
 import debounce from 'lodash/debounce';
@@ -16,6 +17,7 @@ class World {
     // et les dimensions de "renderer".
     this._width = window.innerWidth;
     this._height = window.innerHeight;
+    this._lights = [];
 
     // Création de la scène
     this._scene = new Scene();
@@ -131,6 +133,13 @@ class World {
     );
   }
 
+  /**
+   * Resize
+   *
+   * @returns {undefined}
+   *
+   * @memberOf World
+   */
   onResize() {
     this._width = window.innerWidth;
     this._height = window.innerHeight;
@@ -139,6 +148,13 @@ class World {
     this._camera.updateProjectionMatrix();
   }
 
+  /**
+   * Rend la scène
+   *
+   * @returns {undefined}
+   *
+   * @memberOf World
+   */
   render() {
     requestAnimationFrame(() => {
       this.render();
@@ -153,6 +169,44 @@ class World {
     if (this._stats) {
       this._stats.end();
     }
+  }
+
+  /**
+   * Crée et ajoute un helper à la scène
+   *
+   * @param {any} camera camera
+   * @param {any} name nom du helper
+   * @returns {undefined}
+   *
+   * @memberOf World
+   */
+  addHelper(camera, name) {
+    const helper = new CameraHelper(camera);
+
+    helper.name = `${name}Helper`;
+    this._scene.add(helper);
+  }
+
+  /**
+   * Ajoute une lumière à la scène
+   *
+   * @param {any} instance THREELight
+   * @returns {undefined}
+   * @memberOf World
+   */
+  addLight(instance) {
+    // ES6 object destructuring
+    // const light = instance.light;
+    const { light } = instance;
+
+    this._lights.push(light);
+    this._scene.add(light);
+
+    if (light.helper && global.debug) {
+      this.addHelper(light.shadow.camera, light.name);
+    }
+
+    console.info(this._lights);
   }
 }
 
