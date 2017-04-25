@@ -18,6 +18,7 @@ class World {
     this._width = window.innerWidth;
     this._height = window.innerHeight;
     this._lights = [];
+    this._objects = [];
 
     // Création de la scène
     this._scene = new Scene();
@@ -38,6 +39,14 @@ class World {
   // Getters / Setters
   get scene() {
     return this._scene;
+  }
+
+  get camera() {
+    return this._camera;
+  }
+
+  get renderer() {
+    return this._renderer;
   }
 
   /**
@@ -190,7 +199,7 @@ class World {
   /**
    * Ajoute une lumière à la scène
    *
-   * @param {any} instance THREELight
+   * @param {any} instance Light
    * @returns {undefined}
    * @memberOf World
    */
@@ -207,6 +216,24 @@ class World {
     }
 
     console.info(this._lights);
+  }
+
+  /**
+   * Ajoute un objet à la scène
+   *
+   * @param {any} instance Object
+   * @returns {undefined}
+   * @memberOf World
+   */
+  addObject(instance) {
+    // ES6 object destructuring
+    // const light = instance.light;
+    const { mesh } = instance;
+
+    this._objects.push(instance);
+    this._scene.add(mesh);
+
+    console.info(this._objects);
   }
 }
 

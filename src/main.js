@@ -7,6 +7,7 @@ import * as THREE from 'three';
 // Debug end
 
 import World from 'World';
+import Sea from 'Sea';
 import {
   Hemisphere,
   Ambient,
@@ -65,6 +66,7 @@ class Game {
     this._world.addLight(new Hemisphere());
     this._world.addLight(new Ambient());
     this._world.addLight(new Directional());
+    this._world.addObject(new Sea());
   }
 }
 
