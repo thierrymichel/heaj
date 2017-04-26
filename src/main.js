@@ -7,6 +7,7 @@ import * as THREE from 'three';
 const OrbitControls = require('three-orbit-controls')(THREE);
 // Debug end
 
+import debounce from 'lodash/debounce';
 import World from 'World';
 import Sea from 'Sea';
 import Sky from 'Sky';
@@ -32,6 +33,7 @@ class Game {
     // Quand le DOM est prêt, on initialise le jeu
     Game.domReady.then(() => {
       this.init();
+      this.bind();
     });
   }
 
@@ -59,7 +61,10 @@ class Game {
     console.info('Game:init! 🚀', this);
     document.documentElement.classList.add('ready');
 
-    this._world = new World();
+    this._width = window.innerWidth;
+    this._height = window.innerHeight;
+
+    this._world = new World(this._width, this._height);
     this._world.addLight(new Hemisphere());
     this._world.addLight(new Ambient());
     this._world.addLight(new Directional());
@@ -75,6 +80,43 @@ class Game {
       //   this._world.renderer.domElement
       // );
     }
+  }
+
+
+  /**
+   * Ajout des écouteurs d'événements
+   *
+   * @returns {undefined}
+   *
+   * @memberOf Game
+   */
+  bind() {
+    window.addEventListener(
+      'resize',
+      debounce(this.resize.bind(this), 500)
+    );
+
+    document.addEventListener('mousemove', (e) => {
+      this.mouseMove(e);
+    });
+  }
+
+  resize() {
+    this._width = window.innerWidth;
+    this._height = window.innerHeight;
+    this._world.resize(this._width, this._height);
+  }
+
+  mouseMove(e) {
+    // On récupère quelque chose entre -1 et 1
+    const x = -1 + ((e.clientX / this._width) * 2);
+    const y = 1 - ((e.clientY / this._height) * 2);
+
+    this._mouse = {
+      x,
+      y,
+    };
+    console.info(this._mouse);
   }
 }
 

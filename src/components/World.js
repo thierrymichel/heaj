@@ -6,17 +6,23 @@ import {
   CameraHelper,
 } from 'three';
 
-import debounce from 'lodash/debounce';
 const { Stats } = require('three-stats');
 
 class World {
-  constructor() {
+  /**
+   * Crée une instance de World.
+   * @param {number} w largeur du viewport
+   * @param {number} h hauteur du viewport
+   *
+   * @memberOf World
+   */
+  constructor(w, h) {
     console.info('World:construtor');
     // On récupère les dimension du viewport
     // et on les utilise pour le ratio de la caméra
     // et les dimensions de "renderer".
-    this._width = window.innerWidth;
-    this._height = window.innerHeight;
+    this._width = w;
+    this._height = h;
     this._lights = [];
     this._objects = [];
 
@@ -27,7 +33,6 @@ class World {
     this.initFog();
     this.initCamera();
     this.initRenderer();
-    this.bind();
 
     if (global.debug) {
       this.initStats();
@@ -129,31 +134,17 @@ class World {
   }
 
   /**
-   * Ajout des écouteurs d'événements
-   *
-   * @returns {undefined}
-   *
-   * @memberOf World
-   */
-  bind() {
-    window.addEventListener(
-      'resize',
-      debounce(this.onResize.bind(this), 500)
-    );
-  }
-
-  /**
    * Resize
    *
+   * @param {number} w largeur du viewport
+   * @param {number} h hauteur du viewport
    * @returns {undefined}
    *
    * @memberOf World
    */
-  onResize() {
-    this._width = window.innerWidth;
-    this._height = window.innerHeight;
-    this._renderer.setSize(this._width, this._height);
-    this._camera.aspect = this._width / this._height;
+  resize(w, h) {
+    this._renderer.setSize(w, h);
+    this._camera.aspect = w / h;
     this._camera.updateProjectionMatrix();
   }
 
