@@ -137,11 +137,15 @@ class Airplane {
    * @memberOf Airplane
    */
   move(mouseX, mouseY) {
-    const targetX = normalize(mouseX, -1, 1, -100, 100);
     const targetY = normalize(mouseY, -1, 1, 25, 175);
 
-    this.mesh.position.x = targetX;
-    this.mesh.position.y = targetY;
+    // A chaque frame, on ajoute une fraction de la distance restante
+    this.mesh.position.y += (targetY - this.mesh.position.y) * 0.1;
+
+    // On incline l'avion en fonction de la distance restante.
+    // Si pas de mouvement -> horizontal
+    this.mesh.rotation.z = (targetY - this.mesh.position.y) * 0.0128;
+    this.mesh.rotation.x = (this.mesh.position.y - targetY) * 0.0064;
   }
 }
 
