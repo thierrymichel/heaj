@@ -121,6 +121,10 @@ class Airplane {
     blades.receiveShadow = true;
     this.propeller.add(blades);
   }
+
+  update() {
+    this.propeller.rotation.x += 0.3;
+  }
 }
 
 export default Airplane;

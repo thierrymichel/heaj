@@ -173,6 +173,12 @@ class World {
       this._stats.begin();
     }
 
+    this._objects.forEach((obj) => {
+      if (obj.update) {
+        obj.update();
+      }
+    });
+
     this._renderer.render(this._scene, this._camera);
 
     if (this._stats) {

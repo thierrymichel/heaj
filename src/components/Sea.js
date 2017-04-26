@@ -34,6 +34,10 @@ class Sea {
   get mesh() {
     return this._mesh;
   }
+
+  update() {
+    this.mesh.rotation.z += 0.005;
+  }
 }
 
 export default Sea;

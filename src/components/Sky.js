@@ -33,6 +33,10 @@ class Sky {
   get mesh() {
     return this._mesh;
   }
+
+  update() {
+    this.mesh.rotation.z += 0.01;
+  }
 }
 
 export default Sky;
