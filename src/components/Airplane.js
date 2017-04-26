@@ -6,6 +6,7 @@ import {
   Mesh,
 } from 'three';
 import colors from '../utils/colors';
+import normalize from '../utils/normalize';
 
 /**
  * Crée un avion
@@ -124,6 +125,23 @@ class Airplane {
 
   update() {
     this.propeller.rotation.x += 0.3;
+  }
+
+  /**
+   * Follow the mouse
+   *
+   * @param {number} mouseX mouse positionX
+   * @param {number} mouseY mouse positionY
+   * @returns {undefined}
+   *
+   * @memberOf Airplane
+   */
+  move(mouseX, mouseY) {
+    const targetX = normalize(mouseX, -1, 1, -100, 100);
+    const targetY = normalize(mouseY, -1, 1, 25, 175);
+
+    this.mesh.position.x = targetX;
+    this.mesh.position.y = targetY;
   }
 }
 

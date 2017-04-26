@@ -70,7 +70,8 @@ class Game {
     this._world.addLight(new Directional());
     this._world.addObject(new Sea());
     this._world.addObject(new Sky());
-    this._world.addObject(new Airplane());
+    this._airplane = new Airplane();
+    this._world.addObject(this._airplane);
 
     if (global.debug) {
       window.scene = this._world.scene;
@@ -116,7 +117,7 @@ class Game {
       x,
       y,
     };
-    console.info(this._mouse);
+    this._airplane.move(this._mouse.x, this._mouse.y);
   }
 }
 
