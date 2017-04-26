@@ -12,6 +12,7 @@ import World from 'World';
 import Sea from 'Sea';
 import Sky from 'Sky';
 import Airplane from 'Airplane';
+import Import from 'Import';
 import {
   Hemisphere,
   Ambient,
@@ -72,6 +73,10 @@ class Game {
     this._world.addObject(new Sky());
     this._airplane = new Airplane();
     this._world.addObject(this._airplane);
+
+    Import.load('airplane.json').then((instance) => {
+      this._world.addObject(instance);
+    });
 
     if (global.debug) {
       window.scene = this._world.scene;
