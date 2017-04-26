@@ -19,6 +19,7 @@ class Sky {
       const height = 700 + (Math.random() * 200); // Hauteur random…
       const s = 1 + (Math.random() * 2);
 
+      cloud.mesh.name = `cloud${i}`;
       cloud.mesh.position.x = Math.cos(angle) * height;
       cloud.mesh.position.y = Math.sin(angle) * height;
       cloud.mesh.position.z = -400 - (Math.random() * 400); // Profondeur

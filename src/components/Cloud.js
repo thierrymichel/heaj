@@ -28,6 +28,7 @@ class Cloud {
       const cube = new Mesh(geom, mat);
       const s = 0.1 + (Math.random() * 0.9); // Tailles différentes
 
+      cube.name = 'cube';
       cube.position.x = i * 15;
       cube.position.y = Math.random() * 10;
       cube.position.y = Math.random() * 10;

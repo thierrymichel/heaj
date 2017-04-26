@@ -43,6 +43,7 @@ class Airplane {
 
     const cockpit = new Mesh(geom, mat);
 
+    cockpit.name = 'cockpit';
     cockpit.castShadow = true;
     cockpit.receiveShadow = true;
     this._mesh.add(cockpit);
@@ -56,6 +57,7 @@ class Airplane {
 
     const engine = new Mesh(geom, mat);
 
+    engine.name = 'engine';
     engine.position.x = 40;
     engine.castShadow = true;
     engine.receiveShadow = true;
@@ -70,6 +72,7 @@ class Airplane {
 
     const tail = new Mesh(geom, mat);
 
+    tail.name = 'tail';
     tail.position.set(-35, 25, 0);
     tail.castShadow = true;
     tail.receiveShadow = true;
@@ -84,6 +87,7 @@ class Airplane {
 
     const wings = new Mesh(geom, mat);
 
+    wings.name = 'wings';
     wings.castShadow = true;
     wings.receiveShadow = true;
     this._mesh.add(wings);
@@ -96,6 +100,7 @@ class Airplane {
     mat.color.set(colors.brown);
 
     this.propeller = new Mesh(geom, mat);
+    this.propeller.name = 'propeller';
     this.propeller.position.set(50, 0, 0);
     this.propeller.castShadow = true;
     this.propeller.receiveShadow = true;
@@ -108,12 +113,13 @@ class Airplane {
 
     mat.color.set(colors.brownDark);
 
-    const blade = new Mesh(geom, mat);
+    const blades = new Mesh(geom, mat);
 
-    blade.position.set(8, 0, 0);
-    blade.castShadow = true;
-    blade.receiveShadow = true;
-    this.propeller.add(blade);
+    blades.name = 'blades';
+    blades.position.set(8, 0, 0);
+    blades.castShadow = true;
+    blades.receiveShadow = true;
+    this.propeller.add(blades);
   }
 }
 
