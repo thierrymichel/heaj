@@ -9,7 +9,7 @@ const OrbitControls = require('three-orbit-controls')(THREE);
 
 import World from 'World';
 import Sea from 'Sea';
-import Cloud from 'Cloud';
+import Sky from 'Sky';
 import {
   Hemisphere,
   Ambient,
@@ -63,7 +63,7 @@ class Game {
     this._world.addLight(new Ambient());
     this._world.addLight(new Directional());
     this._world.addObject(new Sea());
-    this._world.addObject(new Cloud());
+    this._world.addObject(new Sky());
 
     if (global.debug) {
       window.scene = this._world.scene;
